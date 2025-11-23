@@ -1,0 +1,99 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Form {
+  id          String    @id @default(cuid())
+  name        String
+  email       String    @unique
+  is_verified Boolean   @default(false)
+  payment_method PaymentMethod
+  payment_status PayMentStatus
+  number_of_tickets Int
+  number_of_seat_tickets Int
+  remarks     String?
+  
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+
+  tickets     Ticket[]
+}
+
+model Ticket {
+  id           String    @id @default(cuid())
+  form_id      String
+  movie_id     String
+  purpose      TicketPurpose
+  type         TicketType
+  is_used      Boolean   @default(false)
+  is_activated Boolean   @default(false)
+  sheet_id     String?   @unique
+  created_at   DateTime  @default(now())
+  updated_at   DateTime  @updatedAt
+
+  form   Form   @relation(fields: [form_id], references: [id], onDelete: Cascade)
+  movie  Movie  @relation(fields: [movie_id], references: [id])
+  sheet  Sheet? @relation(fields: [sheet_id], references: [id])
+}
+
+model Sheet {
+  id         String    @id @default(cuid())
+  row        String
+  col        Int
+  status     SheetStatus
+  movie_id   String
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+
+  movie  Movie   @relation(fields: [movie_id], references: [id])
+  ticket Ticket?
+
+  @@unique([movie_id, row, col])
+}
+
+model Movie {
+  id         String    @id @default(cuid())
+  title      String
+  onair      DateTime
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+
+  sheets  Sheet[]
+  tickets Ticket[]
+}
+
+enum PaymentMethod {
+  cash
+  paypay
+  bank_transfer
+}
+
+enum PayMentStatus {
+  not_contacted
+  pending
+  completed
+  failed
+}
+
+enum TicketPurpose {
+  seat
+  goods
+  none
+}
+
+enum TicketType {
+  staff
+  crowdfunding
+  preorder
+  onTheDay
+}
+
+enum SheetStatus {
+  available
+  reserved
+  used
+}

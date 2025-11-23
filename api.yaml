@@ -1,0 +1,529 @@
+openapi: 3.0.0
+info:
+  title: Ticket Management API
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080/api/v1
+    description: Local server
+
+paths:
+
+  #############################
+  # Form
+  #############################
+  /forms:
+    get:
+      summary: List forms
+      parameters:
+        - in: query
+          name: page
+          schema: { type: integer, default: 1 }
+        - in: query
+          name: limit
+          schema: { type: integer, default: 20 }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  page: { type: integer }
+                  limit: { type: integer }
+                  total: { type: integer }
+                  users:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Form'
+
+    post:
+      summary: Create a new form
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FormInput'
+      responses:
+        '201':
+          description: Form created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Form'
+
+  /forms/{formId}:
+    get:
+      summary: Get a specific form
+      parameters:
+        - in: path
+          required: true
+          name: formId
+          schema: { type: string }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Form'
+
+    put:
+      summary: Replace a form
+      parameters:
+        - in: path
+          required: true
+          name: formId
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FormInput'
+      responses:
+        '200':
+          description: Updated
+
+    patch:
+      summary: Update a user partially
+      parameters:
+        - in: path
+          required: true
+          name: userId
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Updated
+
+    delete:
+      summary: Delete a user
+      parameters:
+        - in: path
+          required: true
+          name: userId
+          schema: { type: string }
+      responses:
+        '204':
+          description: No Content
+
+  #############################
+  # Ticket
+  #############################
+  /tickets:
+    get:
+      summary: List tickets
+      parameters:
+        - in: query
+          name: page
+          schema: { type: integer, default: 1 }
+        - in: query
+          name: limit
+          schema: { type: integer, default: 20 }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  page: { type: integer }
+                  limit: { type: integer }
+                  total: { type: integer }
+                  tickets:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Ticket'
+
+    post:
+      summary: Create tickets
+      description: Creates one or more tickets for a user.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [form_id]
+              properties:
+                form_id: { type: string }
+                
+      responses:
+        '201':
+          description: Tickets created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ticket'
+
+  /tickets/{ticketId}:
+    get:
+      summary: Get a ticket
+      parameters:
+        - in: path
+          required: true
+          name: ticketId
+          schema: { type: string }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ticket'
+
+    put:
+      summary: Replace a ticket
+      parameters:
+        - in: path
+          required: true
+          name: ticketId
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TicketInput'
+      responses:
+        '200':
+          description: Updated
+
+    patch:
+      summary: Update a ticket partially
+      parameters:
+        - in: path
+          required: true
+          name: ticketId
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Updated
+
+    delete:
+      summary: Delete a ticket
+      parameters:
+        - in: path
+          required: true
+          name: ticketId
+          schema: { type: string }
+      responses:
+        '204':
+          description: No Content
+
+
+  #############################
+  # Movie
+  #############################
+  /movies:
+    get:
+      summary: List movies
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Movie'
+
+    post:
+      summary: Create movie
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MovieInput'
+      responses:
+        '201':
+          description: Created
+
+  /movies/{movieId}:
+    get:
+      summary: Get movie
+      parameters:
+        - in: path
+          required: true
+          name: movieId
+          schema: { type: string }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+
+    put:
+      summary: Replace movie
+      parameters:
+        - in: path
+          required: true
+          name: movieId
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MovieInput'
+      responses:
+        '200':
+          description: Updated
+
+    delete:
+      summary: Delete movie
+      parameters:
+        - in: path
+          required: true
+          name: movieId
+          schema: { type: string }
+      responses:
+        '204':
+          description: No Content
+
+
+  #############################
+  # Sheet
+  #############################
+  /movies/{movieId}/sheets:
+    get:
+      summary: List seats for a movie
+      parameters:
+        - in: path
+          required: true
+          name: movieId
+          schema: { type: string }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Sheet'
+
+    post:
+      summary: Create seats for a movie
+      parameters:
+        - in: path
+          required: true
+          name: movieId
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SheetInput'
+      responses:
+        '201':
+          description: Sheet Created
+
+  /movies/{movieId}/sheets/{sheetId}:
+    get:
+      summary: Get seat info
+      parameters:
+        - in: path
+          required: true
+          name: movieId
+          schema: { type: string }
+        - in: path
+          required: true
+          name: sheetId
+          schema: { type: string }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sheet'
+
+    patch:
+      summary: Update seat
+      parameters:
+        - in: path
+          required: true
+          name: movieId
+          schema: { type: string }
+        - in: path
+          required: true
+          name: sheetId
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Updated
+
+    delete:
+      summary: Delete seat
+      parameters:
+        - in: path
+          required: true
+          name: movieId
+          schema: { type: string }
+        - in: path
+          required: true
+          name: sheetId
+          schema: { type: string }
+      responses:
+        '204':
+          description: No Content
+
+components:
+  schemas:
+
+    ########################################
+    # Form
+    ########################################
+    Form:
+      type: object
+      properties:
+        id: { type: string }
+        name: { type: string }
+        email: { type: string }
+        is_verified: { type: boolean }
+        payment_method: 
+          $ref: '#/components/schemas/PaymentMethod'
+        payment_status:
+          $ref: '#/components/schemas/PaymentStatus'
+        number_of_tickets: { type: integer }
+        number_of_sheets: { type: integer }
+        remarks: { type: string, nullable: true }
+        created_at: { type: string, format: date-time }
+        updated_at: { type: string, format: date-time }
+
+    FormInput:
+      type: object
+      required: [name, email, is_verified, payment_method, number_of_tickets, number_of_sheets]
+      properties:
+        name: { type: string }
+        email: { type: string }
+        is_verified: { type: boolean }
+        payment_method:
+          $ref: '#/components/schemas/PaymentMethod'
+        payment_status:
+          $ref: '#/components/schemas/PaymentStatus'
+        number_of_tickets: { type: integer }
+        number_of_sheets: { type: integer }
+        remarks: { type: string, nullable: true }
+    
+    PaymentMethod:
+      type: string
+      enum: [cash, paypay, bank_transfer]
+
+    PaymentStatus:
+      type: string
+      enum: [ not_contacted, pending, completed, failed]
+
+    ########################################
+    # Ticket
+    ########################################
+    Ticket:
+      type: object
+      properties:
+        id: { type: string }
+        form_id: { type: string }
+        purpose:
+          $ref: '#/components/schemas/TicketPurpose'
+        type:
+          $ref: '#/components/schemas/TicketType'
+        is_used: { type: boolean }
+        is_activated: { type: boolean }
+        sheet_id: { type: string, nullable: true }
+        movie_id: { type: string }
+        created_at: { type: string, format: date-time }
+        updated_at: { type: string, format: date-time }
+
+    TicketInput:
+      type: object
+      required: [form_id, purpose, type, is_used, is_activated, movie_id]
+      properties:
+        form_id: { type: string }
+        purpose:
+          $ref: '#/components/schemas/TicketPurpose'
+        type:
+          $ref: '#/components/schemas/TicketType'
+        is_used: { type: boolean }
+        is_activated: { type: boolean }
+        sheet_id: { type: string, nullable: true }
+        movie_id: { type: string }
+
+    TicketPurpose:
+      type: string
+      enum: [seat, goods]
+
+    TicketType:
+      type: string
+      enum: [staff, crowdfunding, preorder, onTheDay]
+
+    ########################################
+    # Movie
+    ########################################
+    Movie:
+      type: object
+      properties:
+        id: { type: string }
+        title: { type: string }
+        onair: { type: string, format: date-time }
+        created_at: { type: string, format: date-time }
+        updated_at: { type: string, format: date-time }
+
+    MovieInput:
+      type: object
+      required: [title, onair]
+      properties:
+        title: { type: string }
+        onair: { type: string, format: date-time }
+
+    ########################################
+    # Sheet
+    ########################################
+    Sheet:
+      type: object
+      properties:
+        id: { type: string }
+        row: { type: string }
+        col: { type: integer }
+        status:
+          type: string
+          enum: [available, reserved, used]
+        movie_id: { type: string }
+        created_at: { type: string, format: date-time }
+        updated_at: { type: string, format: date-time }
+
+    SheetInput:
+      type: object
+      required: [row, col, status]
+      properties:
+        row: { type: string }
+        col: { type: integer }
+        status:
+          type: string
+          enum: [available, reserved, used]

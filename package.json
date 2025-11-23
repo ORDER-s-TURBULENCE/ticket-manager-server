@@ -8,6 +8,7 @@
     "prisma:migrate": "prisma migrate dev"
   },
   "dependencies": {
+    "prisma": "^7.0.0",
     "@prisma/adapter-pg": "^7.0.0",
     "@prisma/client": "^7.0.0",
     "dotenv": "^17.2.3",
@@ -19,7 +20,6 @@
     "@types/node": "^20.19.25",
     "@types/pg": "^8.15.6",
     "openapi-typescript": "^7.10.1",
-    "prisma": "^7.0.0",
     "tsx": "^4.20.6",
     "typescript": "^5.8.3"
   }

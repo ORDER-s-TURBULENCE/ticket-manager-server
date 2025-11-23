@@ -653,10 +653,12 @@ export interface components {
             name?: string;
             email?: string;
             is_verified?: boolean;
+            movie_id?: string;
+            type?: components["schemas"]["FormType"];
             payment_method?: components["schemas"]["PaymentMethod"];
             payment_status?: components["schemas"]["PaymentStatus"];
             number_of_tickets?: number;
-            number_of_sheets?: number;
+            number_of_seat_tickets?: number;
             remarks?: string | null;
             /** Format: date-time */
             created_at?: string;
@@ -667,12 +669,16 @@ export interface components {
             name: string;
             email: string;
             is_verified: boolean;
+            movie_id: string;
+            type: components["schemas"]["FormType"];
             payment_method: components["schemas"]["PaymentMethod"];
-            payment_status?: components["schemas"]["PaymentStatus"];
+            payment_status: components["schemas"]["PaymentStatus"];
             number_of_tickets: number;
-            number_of_sheets: number;
+            number_of_seat_tickets: number;
             remarks?: string | null;
         };
+        /** @enum {string} */
+        FormType: "staff" | "crowdfunding" | "preorder" | "onTheDay";
         /** @enum {string} */
         PaymentMethod: "cash" | "paypay" | "bank_transfer";
         /** @enum {string} */
@@ -681,7 +687,6 @@ export interface components {
             id?: string;
             form_id?: string;
             purpose?: components["schemas"]["TicketPurpose"];
-            type?: components["schemas"]["TicketType"];
             is_used?: boolean;
             is_activated?: boolean;
             sheet_id?: string | null;
@@ -694,7 +699,6 @@ export interface components {
         TicketInput: {
             form_id: string;
             purpose: components["schemas"]["TicketPurpose"];
-            type: components["schemas"]["TicketType"];
             is_used: boolean;
             is_activated: boolean;
             sheet_id?: string | null;
@@ -702,8 +706,6 @@ export interface components {
         };
         /** @enum {string} */
         TicketPurpose: "seat" | "goods";
-        /** @enum {string} */
-        TicketType: "staff" | "crowdfunding" | "preorder" | "onTheDay";
         Movie: {
             id?: string;
             title?: string;

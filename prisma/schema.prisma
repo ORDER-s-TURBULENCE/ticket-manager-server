@@ -11,6 +11,8 @@ model Form {
   id          String    @id @default(cuid())
   name        String
   email       String    @unique
+  movie_id    String
+  type        FormType
   is_verified Boolean   @default(false)
   payment_method PaymentMethod
   payment_status PayMentStatus
@@ -22,6 +24,7 @@ model Form {
   updated_at  DateTime  @updatedAt
 
   tickets     Ticket[]
+  movie       Movie     @relation(fields: [movie_id], references: [id])
 }
 
 model Ticket {
@@ -29,7 +32,6 @@ model Ticket {
   form_id      String
   movie_id     String
   purpose      TicketPurpose
-  type         TicketType
   is_used      Boolean   @default(false)
   is_activated Boolean   @default(false)
   sheet_id     String?   @unique
@@ -63,8 +65,16 @@ model Movie {
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
 
+  forms  Form[]
   sheets  Sheet[]
   tickets Ticket[]
+}
+
+enum FormType {
+  staff
+  crowdfunding
+  preorder
+  onTheDay
 }
 
 enum PaymentMethod {
@@ -84,13 +94,6 @@ enum TicketPurpose {
   seat
   goods
   none
-}
-
-enum TicketType {
-  staff
-  crowdfunding
-  preorder
-  onTheDay
 }
 
 enum SheetStatus {

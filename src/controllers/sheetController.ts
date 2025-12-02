@@ -36,18 +36,6 @@ export const getSheet = async (c: Context) => {
   }
 }
 
-export const patchSheet = async (c: Context) => {
-  try {
-    const { sheetId } = c.req.param()
-    const payload = await c.req.json()
-    await service.patchSheet(sheetId, payload)
-    return c.text('Updated', 200)
-  } catch (err) {
-    console.error('PATCH /movies/{movieId}/sheets/{sheetId} error', err)
-    return c.text('Internal Server Error', 500)
-  }
-}
-
 export const deleteSheet = async (c: Context) => {
   try {
     const { sheetId } = c.req.param()

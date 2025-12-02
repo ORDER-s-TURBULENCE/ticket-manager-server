@@ -16,8 +16,8 @@ export const getForms = async (c: Context) => {
 export const postForm = async (c: Context) => {
   try {
     const payload = await c.req.json()
-    const created = await service.postForm(payload)
-    return c.json(created, 201)
+    await service.postForm(payload)
+    return c.text('Created', 201)
   } catch (err) {
     console.error('POST /forms error', err)
     return c.text('Internal Server Error', 500)

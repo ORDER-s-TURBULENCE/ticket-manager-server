@@ -18,14 +18,12 @@ export const getMovies = async () => {
 
 export const postMovies = async (movie: MovieInput) => {
     try {
-        const newMovie = await prisma.movie.create({
+        await prisma.movie.create({
             data: {
                 title: movie.title,
                 onair: new Date(movie.onair),
             },
-        });
-
-        return newMovie;
+        });;
     } catch (error) {
         console.error('postMovies error', error);
         throw error;

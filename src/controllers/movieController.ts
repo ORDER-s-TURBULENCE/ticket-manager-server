@@ -14,8 +14,8 @@ export const getMovies = async (c: Context) => {
 export const postMovies = async (c: Context) => {
   try {
     const payload = await c.req.json()
-    const created = await service.postMovies(payload)
-    return c.json(created, 201)
+    await service.postMovies(payload)
+    return c.text('Created', 201)
   } catch (err) {
     console.error('POST /movies error', err)
     return c.text('Internal Server Error', 500)

@@ -15,7 +15,7 @@ export const getForms = async (page = 1, limit = 20) => {
 }
 
 export const postForm = async (input: FormInput) => {
-  const form = await prisma.form.create({
+  await prisma.form.create({
     data: {
       name: input.name,
       email: input.email,
@@ -29,7 +29,6 @@ export const postForm = async (input: FormInput) => {
       remarks: input.remarks ?? null,
     },
   })
-  return form
 }
 
 export const getFormById = async (id: string) => {
@@ -37,7 +36,7 @@ export const getFormById = async (id: string) => {
 }
 
 export const putForm = async (id: string, input:  FormInput) => {
-  return prisma.form.update({
+  await prisma.form.update({
     where: { id },
     data: {
       name: input.name,

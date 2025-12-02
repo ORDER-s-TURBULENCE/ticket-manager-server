@@ -51,7 +51,7 @@ export const postTicketsByForm = async (form_id: string) => {
 }
 
 export const putTicket = async (id: string, input: TicketInput) => {
-  return prisma.ticket.update({ where: { id }, data: input as any })
+ await prisma.ticket.update({ where: { id }, data: input as any })
 }
 
 export const deleteTicket = async (id: string) => {

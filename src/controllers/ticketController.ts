@@ -29,8 +29,8 @@ export const postTickets = async (c: Context) => {
   try {
     const payload = await c.req.json()
     if (!payload?.form_id) return c.text('form_id required', 400)
-    const created = await service.postTicketsByForm(payload.form_id)
-    return c.json(created, 201)
+    await service.postTicketsByForm(payload.form_id)
+    return c.text('Created', 201)
   } catch (err: any) {
     console.error('POST /tickets error', err)
     if (err.message === 'form_not_found') return c.text('Form not found', 404)

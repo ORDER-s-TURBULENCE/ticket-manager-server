@@ -8,11 +8,9 @@ export const getSheetsByMovie = async (movieId: string) => {
 }
 
 export const postSheetForMovie = async (movieId: string, input: SheetInput) => {
-  return prisma.sheet.create({ data: { ...input, movie_id: movieId } as any })
+  await prisma.sheet.create({ data: { ...input, movie_id: movieId } as any })
 }
 
 export const getSheet = async (id: string) => prisma.sheet.findUnique({ where: { id } })
-
-export const patchSheet = async (id: string, patch: Partial<SheetInput>) => prisma.sheet.update({ where: { id }, data: patch })
 
 export const deleteSheet = async (id: string) => prisma.sheet.delete({ where: { id } })

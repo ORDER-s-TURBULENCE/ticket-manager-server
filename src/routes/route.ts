@@ -28,7 +28,6 @@ admin.delete('/tickets/:ticketId', ticketController.deleteTicket)
 admin.get('/movies/:movieId/sheets', sheetController.getSheets)
 admin.post('/movies/:movieId/sheets', sheetController.postSheet)
 admin.get('/movies/:movieId/sheets/:sheetId', sheetController.getSheet)
-admin.patch('/movies/:movieId/sheets/:sheetId', sheetController.patchSheet)
 admin.delete('/movies/:movieId/sheets/:sheetId', sheetController.deleteSheet)
 
 // Movies

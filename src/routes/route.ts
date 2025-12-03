@@ -9,8 +9,6 @@ const admin = new Hono()
 const user = new Hono()
 
 // === Admin routes ===
-api.route('/admin', admin)
-
 // Forms
 admin.get('/forms', formController.getForms)
 admin.get('/forms/:formId', formController.getFormById)
@@ -34,10 +32,9 @@ admin.delete('/movies/:movieId/sheets/:sheetId', sheetController.deleteSheet)
 admin.get('/movies', movieController.getMovies)
 admin.post('/movies', movieController.postMovies)
 
+api.route('/admin', admin)
 
 // === User routes ===
-api.route('/user', user)
-
 // Forms
 user.get('/forms/:formId', formController.getFormById)
 user.post('/forms', formController.postForm)
@@ -45,5 +42,7 @@ user.post('/forms', formController.postForm)
 // Tickets
 user.get('/tickets/form/:formId', ticketController.getTicketsByFormId)
 user.put('/tickets/:ticketId', ticketController.putTicket)
+
+api.route('/user', user)
 
 export default api

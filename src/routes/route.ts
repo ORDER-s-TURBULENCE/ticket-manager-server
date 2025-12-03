@@ -3,10 +3,18 @@ import * as movieController from '../controllers/movieController.js'
 import * as formController from '../controllers/formController.js'
 import * as ticketController from '../controllers/ticketController.js'
 import * as sheetController from '../controllers/sheetController.js'
+import * as squareWebhookController from '../controllers/squareWebhook.js'
 
 const api = new Hono()
 const admin = new Hono()
 const user = new Hono()
+const webhook = new Hono()
+
+// === Webhook routes ===
+// Square Webhook
+webhook.post('/squareWebhook', squareWebhookController.postSquareWebhook)
+
+api.route('/webhook', webhook)
 
 // === Admin routes ===
 // Forms

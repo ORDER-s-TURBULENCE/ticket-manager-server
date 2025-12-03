@@ -33,7 +33,7 @@ export const postTicketsByForm = async (form_id: string) => {
             form_id: form.id, 
             movie_id: form.movie_id,
             purpose: 'seat' as TicketPurpose,
-            is_activated: false,
+            is_activated: true,
             is_used: false,
         })
     }
@@ -42,7 +42,7 @@ export const postTicketsByForm = async (form_id: string) => {
             form_id: form.id, 
             movie_id: form.movie_id,
             purpose: 'goods' as TicketPurpose,
-            is_activated: false,
+            is_activated: true,
             is_used: false,
         })
     }

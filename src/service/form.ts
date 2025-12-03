@@ -1,7 +1,10 @@
-import { sendMail } from "../../lib/gmail/gmail.js";
-import { prisma } from "../../lib/prisma.js";
+import { sendMail } from "../lib/gmail/gmail.js";
+import { prisma } from "../lib/prisma.js";
 import type { components } from "../types/api.js";
-import { createSquarePaymentLink } from "../../lib/square/square.js";
+import { createSquarePaymentLink } from "../lib/square.js";
+import { sendDiscordWebhook } from "../lib/discordWebhook/discordWebhook.js";
+import { cashMailTemplate, squareMailTemplate } from "../lib/gmail/mailTemplate.js";
+import { cashDiscordTemplate, squareDiscordTemplate } from "../lib/discordWebhook/discordTemplate.js";
 
 type FormInput = components["schemas"]["FormInput"];
 
@@ -28,10 +31,10 @@ export const postForm = async (input: FormInput) => {
       type: input.type,
       is_verified: input.is_verified,
       payment_method: input.payment_method,
-      payment_status: input.payment_status,
+      payment_status: "not_contacted",
       number_of_tickets: input.number_of_tickets,
       number_of_seat_tickets: input.number_of_seat_tickets,
-      is_deleted: input.is_deleted ?? false,
+      is_deleted: false,
       remarks: input.remarks ?? null,
     },
   });
@@ -43,10 +46,12 @@ export const postForm = async (input: FormInput) => {
       formId: form.id
     });
 
+    await sendDiscordWebhook(squareDiscordTemplate(input.name, input.number_of_tickets, form.id));
+
     await sendMail({
       to: input.email,
-      subject: "秩序の奔流 購入申請受付完了とお支払いのお願い",
-      text: `${input.name} 様\n\n購入申請をしていただき，誠にありがとうございます。\n以下のリンクからお支払いを完了してください。\n\n${paymentLink.url}\n\nよろしくお願いいたします。\n秩序の奔流 運営委員会`,
+      subject: "【秩序の奔流】購入申請受付完了とお支払いのお願い",
+      text: squareMailTemplate(input.name, input.number_of_tickets, paymentLink.url),
     });
 
     await prisma.form.update({
@@ -55,10 +60,12 @@ export const postForm = async (input: FormInput) => {
     });
   }
   else {
+    await sendDiscordWebhook(cashDiscordTemplate(input.name, input.number_of_tickets, form.id, input.payment_method === "cash" ? "現金" : "銀行振込"));
+
     await sendMail({
       to: input.email,
-      subject: "秩序の奔流 購入申請受付完了",
-        text: `${input.name} 様\n\n購入申請をしていただき，誠にありがとうございます。\n\n内容を確認の上，追ってご連絡いたします。\n\nよろしくお願いいたします。\n秩序の奔流 運営委員会`,
+      subject: "【秩序の奔流】購入申請受付完了",
+        text: cashMailTemplate(input.name, input.number_of_tickets, input.payment_method === "cash" ? "現金" : "銀行振込"),
     });
   }
 };

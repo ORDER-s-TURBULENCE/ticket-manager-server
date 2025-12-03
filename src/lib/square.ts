@@ -1,8 +1,8 @@
 import 'dotenv/config'
 import crypto from "crypto"
-import { prisma } from "../../lib/prisma.js";
+import { prisma } from "./prisma.js";
+import { TICKET_PRICE } from './constant.js';
 
-const pricePerTicket = 2500 // in JPY
 const applicationId = process.env.SQUARE_APPLICATION_ID
 const accessToken = process.env.SQUARE_ACCESS_TOKEN
 const locationId = process.env.SQUARE_LOCATION_ID
@@ -34,7 +34,7 @@ export async function createSquarePaymentLink({
     quick_pay: {
       name: "秩序の奔流 チケット - " + numberOfTickets + " 枚",
       price_money: {
-        amount: numberOfTickets * pricePerTicket,
+        amount: numberOfTickets * TICKET_PRICE,
         currency: "JPY",
       },
       location_id: locationId,

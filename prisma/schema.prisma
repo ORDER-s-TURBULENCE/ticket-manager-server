@@ -8,49 +8,51 @@ generator client {
 }
 
 model Form {
-  id          String    @id @default(cuid())
-  name        String
-  email       String    @unique
-  movie_id    String
-  type        FormType
-  is_verified Boolean   @default(false)
-  payment_method PaymentMethod
-  payment_status PayMentStatus
-  number_of_tickets Int
+  id                     String        @id @default(cuid())
+  name                   String
+  email                  String
+  movie_id               String
+  type                   FormType
+  is_verified            Boolean       @default(false)
+  payment_method         PaymentMethod
+  payment_status         PayMentStatus
+  number_of_tickets      Int
   number_of_seat_tickets Int
-  remarks     String?
-  
-  created_at  DateTime  @default(now())
-  updated_at  DateTime  @updatedAt
+  is_deleted             Boolean       @default(false)
+  remarks                String?
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 
   tickets     Ticket[]
-  movie       Movie     @relation(fields: [movie_id], references: [id])
+  movie       Movie        @relation(fields: [movie_id], references: [id])
+  paymentLink PaymentLink?
 }
 
 model Ticket {
-  id           String    @id @default(cuid())
+  id           String        @id @default(cuid())
   form_id      String
   movie_id     String
   purpose      TicketPurpose
-  is_used      Boolean   @default(false)
-  is_activated Boolean   @default(false)
-  sheet_id     String?   @unique
-  created_at   DateTime  @default(now())
-  updated_at   DateTime  @updatedAt
+  is_used      Boolean       @default(false)
+  is_activated Boolean       @default(false)
+  sheet_id     String?       @unique
+  created_at   DateTime      @default(now())
+  updated_at   DateTime      @updatedAt
 
-  form   Form   @relation(fields: [form_id], references: [id], onDelete: Cascade)
-  movie  Movie  @relation(fields: [movie_id], references: [id])
-  sheet  Sheet? @relation(fields: [sheet_id], references: [id])
+  form  Form   @relation(fields: [form_id], references: [id], onDelete: Cascade)
+  movie Movie  @relation(fields: [movie_id], references: [id])
+  sheet Sheet? @relation(fields: [sheet_id], references: [id])
 }
 
 model Sheet {
-  id         String    @id @default(cuid())
+  id         String      @id @default(cuid())
   row        String
   col        Int
   status     SheetStatus
   movie_id   String
-  created_at DateTime  @default(now())
-  updated_at DateTime  @updatedAt
+  created_at DateTime    @default(now())
+  updated_at DateTime    @updatedAt
 
   movie  Movie   @relation(fields: [movie_id], references: [id])
   ticket Ticket?
@@ -59,15 +61,30 @@ model Sheet {
 }
 
 model Movie {
-  id         String    @id @default(cuid())
+  id         String   @id @default(cuid())
   title      String
   onair      DateTime
-  created_at DateTime  @default(now())
-  updated_at DateTime  @updatedAt
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 
-  forms  Form[]
+  forms   Form[]
   sheets  Sheet[]
   tickets Ticket[]
+}
+
+model PaymentLink {
+  id               String   @id
+  form_id          String   @unique
+  version          Int
+  description      String
+  order_id         String
+  checkout_options Json
+  url              String
+  long_url         String
+  created_at       DateTime
+  is_completed     Boolean  @default(false)
+
+  form Form @relation(fields: [form_id], references: [id])
 }
 
 enum FormType {
@@ -79,7 +96,7 @@ enum FormType {
 
 enum PaymentMethod {
   cash
-  paypay
+  square
   bank_transfer
 }
 

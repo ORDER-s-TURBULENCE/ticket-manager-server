@@ -384,6 +384,7 @@ components:
           $ref: '#/components/schemas/PaymentStatus'
         number_of_tickets: { type: integer }
         number_of_seat_tickets  : { type: integer }
+        is_deleted: { type: boolean }
         remarks: { type: string, nullable: true }
         created_at: { type: string, format: date-time }
         updated_at: { type: string, format: date-time }
@@ -404,6 +405,7 @@ components:
           $ref: '#/components/schemas/PaymentStatus'
         number_of_tickets: { type: integer }
         number_of_seat_tickets: { type: integer }
+        is_deleted: { type: boolean }
         remarks: { type: string, nullable: true }
     
     FormType:
@@ -412,7 +414,7 @@ components:
     
     PaymentMethod:
       type: string
-      enum: [cash, paypay, bank_transfer]
+      enum: [cash, square, bank_transfer]
 
     PaymentStatus:
       type: string

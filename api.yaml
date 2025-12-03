@@ -10,11 +10,11 @@ servers:
 paths:
 
   #############################
-  # Form
+  # Admin
   #############################
-  /forms:
+  /admin/forms:
     get:
-      summary: List forms
+      summary: Admin - List forms
       parameters:
         - in: query
           name: page
@@ -38,25 +38,9 @@ paths:
                     items:
                       $ref: '#/components/schemas/Form'
 
-    post:
-      summary: Create a new form
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/FormInput'
-      responses:
-        '201':
-          description: Form created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Form'
-
-  /forms/{formId}:
+  /admin/forms/{formId}:
     get:
-      summary: Get a specific form
+      summary: Admin - Get a specific form
       parameters:
         - in: path
           required: true
@@ -71,7 +55,7 @@ paths:
                 $ref: '#/components/schemas/Form'
 
     put:
-      summary: Replace a form
+      summary: Admin - Replace a form
       parameters:
         - in: path
           required: true
@@ -87,40 +71,20 @@ paths:
         '200':
           description: Updated
 
-    patch:
-      summary: Update a user partially
-      parameters:
-        - in: path
-          required: true
-          name: userId
-          schema: { type: string }
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-      responses:
-        '200':
-          description: Updated
-
     delete:
-      summary: Delete a user
+      summary: Admin - Delete a form
       parameters:
         - in: path
           required: true
-          name: userId
+          name: formId
           schema: { type: string }
       responses:
         '204':
           description: No Content
 
-  #############################
-  # Ticket
-  #############################
-  /tickets:
+  /admin/tickets:
     get:
-      summary: List tickets
+      summary: Admin - List tickets
       parameters:
         - in: query
           name: page
@@ -145,8 +109,7 @@ paths:
                       $ref: '#/components/schemas/Ticket'
 
     post:
-      summary: Create tickets
-      description: Creates one or more tickets for a user.
+      summary: Admin - Create tickets (by form_id)
       requestBody:
         required: true
         content:
@@ -156,7 +119,6 @@ paths:
               required: [form_id]
               properties:
                 form_id: { type: string }
-                
       responses:
         '201':
           description: Tickets created
@@ -167,9 +129,9 @@ paths:
                 items:
                   $ref: '#/components/schemas/Ticket'
 
-  /tickets/{ticketId}:
+  /admin/tickets/{ticketId}:
     get:
-      summary: Get a ticket
+      summary: Admin - Get a ticket
       parameters:
         - in: path
           required: true
@@ -184,7 +146,7 @@ paths:
                 $ref: '#/components/schemas/Ticket'
 
     put:
-      summary: Replace a ticket
+      summary: Admin - Replace a ticket
       parameters:
         - in: path
           required: true
@@ -200,25 +162,8 @@ paths:
         '200':
           description: Updated
 
-    patch:
-      summary: Update a ticket partially
-      parameters:
-        - in: path
-          required: true
-          name: ticketId
-          schema: { type: string }
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-      responses:
-        '200':
-          description: Updated
-
     delete:
-      summary: Delete a ticket
+      summary: Admin - Delete a ticket
       parameters:
         - in: path
           required: true
@@ -228,13 +173,9 @@ paths:
         '204':
           description: No Content
 
-
-  #############################
-  # Movie
-  #############################
-  /movies:
+  /admin/movies:
     get:
-      summary: List movies
+      summary: Admin - List movies
       responses:
         '200':
           description: OK
@@ -246,7 +187,7 @@ paths:
                   $ref: '#/components/schemas/Movie'
 
     post:
-      summary: Create movie
+      summary: Admin - Create movie
       requestBody:
         required: true
         content:
@@ -257,57 +198,9 @@ paths:
         '201':
           description: Created
 
-  /movies/{movieId}:
+  /admin/movies/{movieId}/sheets:
     get:
-      summary: Get movie
-      parameters:
-        - in: path
-          required: true
-          name: movieId
-          schema: { type: string }
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Movie'
-
-    put:
-      summary: Replace movie
-      parameters:
-        - in: path
-          required: true
-          name: movieId
-          schema: { type: string }
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MovieInput'
-      responses:
-        '200':
-          description: Updated
-
-    delete:
-      summary: Delete movie
-      parameters:
-        - in: path
-          required: true
-          name: movieId
-          schema: { type: string }
-      responses:
-        '204':
-          description: No Content
-
-
-  #############################
-  # Sheet
-  #############################
-  /movies/{movieId}/sheets:
-    get:
-      summary: List seats for a movie
+      summary: Admin - List seats for a movie
       parameters:
         - in: path
           required: true
@@ -324,7 +217,7 @@ paths:
                   $ref: '#/components/schemas/Sheet'
 
     post:
-      summary: Create seats for a movie
+      summary: Admin - Create seats for a movie
       parameters:
         - in: path
           required: true
@@ -340,9 +233,9 @@ paths:
         '201':
           description: Sheet Created
 
-  /movies/{movieId}/sheets/{sheetId}:
+  /admin/movies/{movieId}/sheets/{sheetId}:
     get:
-      summary: Get seat info
+      summary: Admin - Get seat info
       parameters:
         - in: path
           required: true
@@ -361,7 +254,7 @@ paths:
                 $ref: '#/components/schemas/Sheet'
 
     patch:
-      summary: Update seat
+      summary: Admin - Update seat
       parameters:
         - in: path
           required: true
@@ -382,7 +275,7 @@ paths:
           description: Updated
 
     delete:
-      summary: Delete seat
+      summary: Admin - Delete seat
       parameters:
         - in: path
           required: true
@@ -395,6 +288,79 @@ paths:
       responses:
         '204':
           description: No Content
+
+  #############################
+  # User
+  #############################
+  /user/forms:
+    post:
+      summary: User - Create a new form
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FormInput'
+      responses:
+        '201':
+          description: Form created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Form'
+
+  /user/forms/{formId}:
+    get:
+      summary: User - Get a specific form
+      parameters:
+        - in: path
+          required: true
+          name: formId
+          schema: { type: string }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Form'
+
+  /user/tickets/form/{formId}:
+    get:
+      summary: User - List tickets by form
+      parameters:
+        - in: path
+          required: true
+          name: formId
+          schema: { type: string }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ticket'
+
+  /user/tickets/{ticketId}:
+    put:
+      summary: User - Update a ticket
+      parameters:
+        - in: path
+          required: true
+          name: ticketId
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TicketInput'
+      responses:
+        '200':
+          description: Updated
+
 
 components:
   schemas:
@@ -409,34 +375,46 @@ components:
         name: { type: string }
         email: { type: string }
         is_verified: { type: boolean }
+        movie_id: { type: string }
+        type:
+          $ref: '#/components/schemas/FormType'
         payment_method: 
           $ref: '#/components/schemas/PaymentMethod'
         payment_status:
           $ref: '#/components/schemas/PaymentStatus'
         number_of_tickets: { type: integer }
-        number_of_sheets: { type: integer }
+        number_of_seat_tickets  : { type: integer }
+        is_deleted: { type: boolean }
         remarks: { type: string, nullable: true }
         created_at: { type: string, format: date-time }
         updated_at: { type: string, format: date-time }
 
     FormInput:
       type: object
-      required: [name, email, is_verified, payment_method, number_of_tickets, number_of_sheets]
+      required: [name, email, is_verified, movie_id, type, payment_method, payment_status, number_of_tickets, number_of_seat_tickets]
       properties:
         name: { type: string }
         email: { type: string }
         is_verified: { type: boolean }
+        movie_id: { type: string }
+        type:
+          $ref: '#/components/schemas/FormType'
         payment_method:
           $ref: '#/components/schemas/PaymentMethod'
         payment_status:
           $ref: '#/components/schemas/PaymentStatus'
         number_of_tickets: { type: integer }
-        number_of_sheets: { type: integer }
+        number_of_seat_tickets: { type: integer }
+        is_deleted: { type: boolean }
         remarks: { type: string, nullable: true }
+    
+    FormType:
+      type: string
+      enum: [staff, crowdfunding, preorder, onTheDay]
     
     PaymentMethod:
       type: string
-      enum: [cash, paypay, bank_transfer]
+      enum: [cash, square, bank_transfer]
 
     PaymentStatus:
       type: string
@@ -452,8 +430,6 @@ components:
         form_id: { type: string }
         purpose:
           $ref: '#/components/schemas/TicketPurpose'
-        type:
-          $ref: '#/components/schemas/TicketType'
         is_used: { type: boolean }
         is_activated: { type: boolean }
         sheet_id: { type: string, nullable: true }
@@ -463,13 +439,11 @@ components:
 
     TicketInput:
       type: object
-      required: [form_id, purpose, type, is_used, is_activated, movie_id]
+      required: [form_id, purpose, is_used, is_activated, movie_id]
       properties:
         form_id: { type: string }
         purpose:
           $ref: '#/components/schemas/TicketPurpose'
-        type:
-          $ref: '#/components/schemas/TicketType'
         is_used: { type: boolean }
         is_activated: { type: boolean }
         sheet_id: { type: string, nullable: true }
@@ -478,10 +452,6 @@ components:
     TicketPurpose:
       type: string
       enum: [seat, goods]
-
-    TicketType:
-      type: string
-      enum: [staff, crowdfunding, preorder, onTheDay]
 
     ########################################
     # Movie

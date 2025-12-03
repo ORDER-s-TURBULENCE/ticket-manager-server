@@ -4,14 +4,14 @@
  */
 
 export interface paths {
-    "/forms": {
+    "/admin/forms": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** List forms */
+        /** Admin - List forms */
         get: {
             parameters: {
                 query?: {
@@ -41,45 +41,21 @@ export interface paths {
             };
         };
         put?: never;
-        /** Create a new form */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["FormInput"];
-                };
-            };
-            responses: {
-                /** @description Form created */
-                201: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["Form"];
-                    };
-                };
-            };
-        };
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
-    "/forms/{formId}": {
+    "/admin/forms/{formId}": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Get a specific form */
+        /** Admin - Get a specific form */
         get: {
             parameters: {
                 query?: never;
@@ -102,7 +78,7 @@ export interface paths {
                 };
             };
         };
-        /** Replace a form */
+        /** Admin - Replace a form */
         put: {
             parameters: {
                 query?: never;
@@ -128,13 +104,13 @@ export interface paths {
             };
         };
         post?: never;
-        /** Delete a user */
+        /** Admin - Delete a form */
         delete: {
             parameters: {
                 query?: never;
                 header?: never;
                 path: {
-                    userId: string;
+                    formId: string;
                 };
                 cookie?: never;
             };
@@ -151,41 +127,17 @@ export interface paths {
         };
         options?: never;
         head?: never;
-        /** Update a user partially */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    userId: string;
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-            responses: {
-                /** @description Updated */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
+        patch?: never;
         trace?: never;
     };
-    "/tickets": {
+    "/admin/tickets": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** List tickets */
+        /** Admin - List tickets */
         get: {
             parameters: {
                 query?: {
@@ -215,10 +167,7 @@ export interface paths {
             };
         };
         put?: never;
-        /**
-         * Create tickets
-         * @description Creates one or more tickets for a user.
-         */
+        /** Admin - Create tickets (by form_id) */
         post: {
             parameters: {
                 query?: never;
@@ -251,14 +200,14 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/tickets/{ticketId}": {
+    "/admin/tickets/{ticketId}": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Get a ticket */
+        /** Admin - Get a ticket */
         get: {
             parameters: {
                 query?: never;
@@ -281,7 +230,7 @@ export interface paths {
                 };
             };
         };
-        /** Replace a ticket */
+        /** Admin - Replace a ticket */
         put: {
             parameters: {
                 query?: never;
@@ -307,7 +256,7 @@ export interface paths {
             };
         };
         post?: never;
-        /** Delete a ticket */
+        /** Admin - Delete a ticket */
         delete: {
             parameters: {
                 query?: never;
@@ -330,41 +279,17 @@ export interface paths {
         };
         options?: never;
         head?: never;
-        /** Update a ticket partially */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    ticketId: string;
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": Record<string, never>;
-                };
-            };
-            responses: {
-                /** @description Updated */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
+        patch?: never;
         trace?: never;
     };
-    "/movies": {
+    "/admin/movies": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** List movies */
+        /** Admin - List movies */
         get: {
             parameters: {
                 query?: never;
@@ -386,7 +311,7 @@ export interface paths {
             };
         };
         put?: never;
-        /** Create movie */
+        /** Admin - Create movie */
         post: {
             parameters: {
                 query?: never;
@@ -415,96 +340,14 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/movies/{movieId}": {
+    "/admin/movies/{movieId}/sheets": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Get movie */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    movieId: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description OK */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["Movie"];
-                    };
-                };
-            };
-        };
-        /** Replace movie */
-        put: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    movieId: string;
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["MovieInput"];
-                };
-            };
-            responses: {
-                /** @description Updated */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        post?: never;
-        /** Delete movie */
-        delete: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    movieId: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description No Content */
-                204: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/movies/{movieId}/sheets": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List seats for a movie */
+        /** Admin - List seats for a movie */
         get: {
             parameters: {
                 query?: never;
@@ -528,7 +371,7 @@ export interface paths {
             };
         };
         put?: never;
-        /** Create seats for a movie */
+        /** Admin - Create seats for a movie */
         post: {
             parameters: {
                 query?: never;
@@ -559,14 +402,14 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/movies/{movieId}/sheets/{sheetId}": {
+    "/admin/movies/{movieId}/sheets/{sheetId}": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Get seat info */
+        /** Admin - Get seat info */
         get: {
             parameters: {
                 query?: never;
@@ -592,7 +435,7 @@ export interface paths {
         };
         put?: never;
         post?: never;
-        /** Delete seat */
+        /** Admin - Delete seat */
         delete: {
             parameters: {
                 query?: never;
@@ -616,7 +459,7 @@ export interface paths {
         };
         options?: never;
         head?: never;
-        /** Update seat */
+        /** Admin - Update seat */
         patch: {
             parameters: {
                 query?: never;
@@ -644,6 +487,162 @@ export interface paths {
         };
         trace?: never;
     };
+    "/user/forms": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** User - Create a new form */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["FormInput"];
+                };
+            };
+            responses: {
+                /** @description Form created */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Form"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/user/forms/{formId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** User - Get a specific form */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    formId: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Form"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/user/tickets/form/{formId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** User - List tickets by form */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    formId: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Ticket"][];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/user/tickets/{ticketId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** User - Update a ticket */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    ticketId: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["TicketInput"];
+                };
+            };
+            responses: {
+                /** @description Updated */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -653,10 +652,13 @@ export interface components {
             name?: string;
             email?: string;
             is_verified?: boolean;
+            movie_id?: string;
+            type?: components["schemas"]["FormType"];
             payment_method?: components["schemas"]["PaymentMethod"];
             payment_status?: components["schemas"]["PaymentStatus"];
             number_of_tickets?: number;
-            number_of_sheets?: number;
+            number_of_seat_tickets?: number;
+            is_deleted?: boolean;
             remarks?: string | null;
             /** Format: date-time */
             created_at?: string;
@@ -667,21 +669,25 @@ export interface components {
             name: string;
             email: string;
             is_verified: boolean;
+            movie_id: string;
+            type: components["schemas"]["FormType"];
             payment_method: components["schemas"]["PaymentMethod"];
-            payment_status?: components["schemas"]["PaymentStatus"];
+            payment_status: components["schemas"]["PaymentStatus"];
             number_of_tickets: number;
-            number_of_sheets: number;
+            number_of_seat_tickets: number;
+            is_deleted?: boolean;
             remarks?: string | null;
         };
         /** @enum {string} */
-        PaymentMethod: "cash" | "paypay" | "bank_transfer";
+        FormType: "staff" | "crowdfunding" | "preorder" | "onTheDay";
+        /** @enum {string} */
+        PaymentMethod: "cash" | "square" | "bank_transfer";
         /** @enum {string} */
         PaymentStatus: "not_contacted" | "pending" | "completed" | "failed";
         Ticket: {
             id?: string;
             form_id?: string;
             purpose?: components["schemas"]["TicketPurpose"];
-            type?: components["schemas"]["TicketType"];
             is_used?: boolean;
             is_activated?: boolean;
             sheet_id?: string | null;
@@ -694,7 +700,6 @@ export interface components {
         TicketInput: {
             form_id: string;
             purpose: components["schemas"]["TicketPurpose"];
-            type: components["schemas"]["TicketType"];
             is_used: boolean;
             is_activated: boolean;
             sheet_id?: string | null;
@@ -702,8 +707,6 @@ export interface components {
         };
         /** @enum {string} */
         TicketPurpose: "seat" | "goods";
-        /** @enum {string} */
-        TicketType: "staff" | "crowdfunding" | "preorder" | "onTheDay";
         Movie: {
             id?: string;
             title?: string;

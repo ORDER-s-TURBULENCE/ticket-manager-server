@@ -1,8 +1,5 @@
 import { Hono } from 'hono'
-import movies from './routes/movies.js'
-
-const api = new Hono()
-api.route('/movies', movies)
+import api from './routes/route.js'
 
 const app = new Hono()
 app.get('/', (c) => c.text('OK'))

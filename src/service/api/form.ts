@@ -103,5 +103,8 @@ export const putForm = async (id: string, input: FormInput) => {
 };
 
 export const deleteForm = async (id: string) => {
-  await prisma.form.update({ where: { id }, data: { is_deleted: true } });
+  await prisma.$transaction(async (tx) => {
+    await tx.form.update({ where: { id }, data: { is_deleted: true } });
+    await tx.ticket.updateMany({ where: { form_id: id }, data: { is_deleted: true } });
+  });
 };

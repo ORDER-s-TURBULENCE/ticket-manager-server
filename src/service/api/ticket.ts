@@ -1,3 +1,4 @@
+import { MAX_SEATS } from '../../lib/constant.js'
 import { prisma } from '../../lib/prisma.js'
 import type { components } from '../../types/api.js'
 
@@ -22,8 +23,30 @@ export const getTicketsByFormId = async (form_id: string) => {
   return prisma.ticket.findMany({ where: { form_id } })
 }
 
+export const getNumberOfTicketsForPurpose = async (movie_id: string) => {
+  const number_of_seat_tickets = await prisma.ticket.count({ 
+    where: {
+      movie_id,
+      purpose: 'seat',
+      is_deleted: false,
+    }
+  })
+  const number_of_goods_tickets = await prisma.ticket.count({ 
+    where: {
+      movie_id,
+      purpose: 'goods',
+      is_deleted: false,
+    }
+  })
+  return {
+    seat: number_of_seat_tickets,
+    goods: number_of_goods_tickets,
+    max_seats: MAX_SEATS,
+  }
+}
+
 export const putTicket = async (id: string, input: TicketInput) => {
- await prisma.ticket.update({ where: { id }, data: input as any })
+  await prisma.ticket.update({ where: { id }, data: input })
 }
 
 export const deleteTicket = async (id: string) => {

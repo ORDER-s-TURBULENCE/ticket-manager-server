@@ -25,6 +25,17 @@ export const getTicketsByFormId = async (c: Context) => {
   }
 }
 
+export const getTicketCountForSeats = async (c: Context) => {
+  try {
+    const { movieId } = c.req.param()
+    const data = await service.getNumberOfTicketsForPurpose(movieId)
+    return c.json({ data })
+  } catch (err) {
+    console.error('GET /tickets/seat/count error', err)
+    return c.text('Internal Server Error', 500)
+  }
+}
+
 export const getTicketById = async (c: Context) => {
   try {
     const { ticketId } = c.req.param()

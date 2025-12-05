@@ -56,6 +56,7 @@ user.post('/forms', formController.postForm)
 
 // Tickets
 user.get('/tickets/form/:formId', ticketController.getTicketsByFormId)
+user.get('/tickets/seat/count/:movieId', ticketController.getTicketCountForSeats)
 
 api.route('/user', user)
 

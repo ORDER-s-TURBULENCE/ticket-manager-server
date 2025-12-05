@@ -4,6 +4,51 @@
  */
 
 export interface paths {
+    "/admin/login": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Admin - Login */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        username: string;
+                        password: string;
+                    };
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            token?: string;
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/admin/forms": {
         parameters: {
             query?: never;
@@ -11,7 +56,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Admin - List forms */
+        /**
+         * Admin - List forms
+         * @description Retrieve all forms excluding those marked as deleted (is_deleted: true).
+         */
         get: {
             parameters: {
                 query?: {
@@ -34,7 +82,7 @@ export interface paths {
                             page?: number;
                             limit?: number;
                             total?: number;
-                            users?: components["schemas"]["Form"][];
+                            forms?: components["schemas"]["Form"][];
                         };
                     };
                 };
@@ -104,7 +152,10 @@ export interface paths {
             };
         };
         post?: never;
-        /** Admin - Delete a form */
+        /**
+         * Admin - Soft delete a form
+         * @description Mark the form as deleted by setting `is_deleted` to `true`.
+         */
         delete: {
             parameters: {
                 query?: never;
@@ -167,33 +218,7 @@ export interface paths {
             };
         };
         put?: never;
-        /** Admin - Create tickets (by form_id) */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": {
-                        form_id: string;
-                    };
-                };
-            };
-            responses: {
-                /** @description Tickets created */
-                201: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["Ticket"][];
-                    };
-                };
-            };
-        };
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -256,7 +281,10 @@ export interface paths {
             };
         };
         post?: never;
-        /** Admin - Delete a ticket */
+        /**
+         * Admin - Soft delete a ticket
+         * @description Mark the ticket as deleted by setting `is_deleted` to `true`.
+         */
         delete: {
             parameters: {
                 query?: never;
@@ -705,6 +733,7 @@ export interface components {
             is_activated: boolean;
             sheet_id?: string | null;
             movie_id: string;
+            is_deleted?: boolean;
         };
         /** @enum {string} */
         TicketPurpose: "seat" | "goods";

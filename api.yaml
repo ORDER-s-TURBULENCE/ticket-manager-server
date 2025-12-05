@@ -454,6 +454,7 @@ components:
         is_activated: { type: boolean }
         sheet_id: { type: string, nullable: true }
         movie_id: { type: string }
+        is_deleted: { type: boolean }
 
     TicketPurpose:
       type: string

@@ -37,6 +37,8 @@ model Ticket {
   is_used      Boolean       @default(false)
   is_activated Boolean       @default(false)
   sheet_id     String?       @unique
+  is_deleted   Boolean       @default(false)
+
   created_at   DateTime      @default(now())
   updated_at   DateTime      @updatedAt
 
@@ -77,12 +79,13 @@ model PaymentLink {
   form_id          String   @unique
   version          Int
   description      String
-  order_id         String
+  order_id         String   @unique
   checkout_options Json
   url              String
   long_url         String
   created_at       DateTime
   is_completed     Boolean  @default(false)
+  is_deleted       Boolean  @default(false)
 
   form Form @relation(fields: [form_id], references: [id])
 }

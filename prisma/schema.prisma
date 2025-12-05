@@ -87,6 +87,14 @@ model PaymentLink {
   form Form @relation(fields: [form_id], references: [id])
 }
 
+model Admin {
+  id         String   @id @default(cuid())
+  username   String   @unique
+  password   String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
 enum FormType {
   staff
   crowdfunding

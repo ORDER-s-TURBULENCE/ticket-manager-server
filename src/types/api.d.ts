@@ -696,6 +696,7 @@ export interface components {
             created_at?: string;
             /** Format: date-time */
             updated_at?: string;
+            is_deleted?: boolean;
         };
         TicketInput: {
             form_id: string;

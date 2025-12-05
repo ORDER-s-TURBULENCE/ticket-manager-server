@@ -2,7 +2,7 @@
     "crons": [
     {
       "path": "/src/controllers/corn/formAutoDeletion.ts",
-      "schedule": "0 * * * *"
+      "schedule": "0 0 * * *"
     }
   ]
 }

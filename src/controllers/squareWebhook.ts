@@ -6,7 +6,7 @@ export const postSquareWebhook = async (c: Context) => {
   try {
     const isValid = await WebhooksHelper.verifySignature({
       requestBody: await c.req.text(),
-      signatureHeader: c.req.header('x-square-signature') || '',
+      signatureHeader: c.req.header('x-square-hmacsha256-signature') || '',
       signatureKey: process.env.SQUARE_SIGNATURE_KEY || '',
       notificationUrl: process.env.SQUARE_WEBHOOK_URL || '',
     })

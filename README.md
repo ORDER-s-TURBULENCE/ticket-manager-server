@@ -1,28 +1,16 @@
-Prerequisites:
+# 「秩序の奔流」チケット管理システム
 
-- [Vercel CLI](https://vercel.com/docs/cli) installed globally
+## チケット発行フロー
+1. フォームで申請
+2. 支払い（チケット仮発行）
+3. 支払い完了（チケット有効化）
 
-To develop locally:
+### フォームが自動削除される条件
+1. Squareの場合...1日以内に支払い完了しないと自動削除
+2. 現金，銀行振込の場合...1週間以内に支払完了しないと自動削除
+毎日0-1時のどこかで実行される（無料プランの影響）
 
-```
-npm install
-vc dev
-```
-
-```
-open http://localhost:3000
-```
-
-To build locally:
-
-```
-npm install
-vc build
-```
-
-To deploy:
-
-```
-npm install
-vc deploy
-```
+### 注意事項
+- チケットの作成は手動でできない！
+- 必ず新しいフォームを申請すること！！
+  - 支払い完了を担保するため

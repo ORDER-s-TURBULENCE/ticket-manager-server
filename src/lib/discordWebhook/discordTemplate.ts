@@ -3,7 +3,7 @@ import { DiscordWebhookMessage } from "../../types/discordWebhook.js";
 export const squareDiscordTemplate = (name: string, numberOfTickets: number, formId: string) : DiscordWebhookMessage => ({
   embeds: [
     {
-        title: "新規購入申請（Square）がありました",
+        title: "新規購入申請がありました（Square）",
         description: `${name} 様が ${numberOfTickets} 枚のチケットを申請しました.`,
         fields: [
             {
@@ -27,7 +27,7 @@ export const squareDiscordTemplate = (name: string, numberOfTickets: number, for
 export const cashDiscordTemplate = (name: string, numberOfTickets: number, formId: string, paymentMethod: string) : DiscordWebhookMessage => ({
     embeds: [
         {
-            title: "新規購入申請（要連絡）があります",
+            title: "新規購入申請があります（要連絡）",
             description: `${name} 様が ${numberOfTickets} 枚のチケットを申請しました.**管理者からの連絡が必要です．**`,
             fields: [
                 {

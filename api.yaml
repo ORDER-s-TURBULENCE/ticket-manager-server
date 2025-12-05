@@ -12,9 +12,33 @@ paths:
   #############################
   # Admin
   #############################
+  /admin/login:
+    post:
+      summary: Admin - Login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [username, password]
+              properties:
+                username: { type: string }
+                password: { type: string }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token: { type: string }
+
   /admin/forms:
     get:
       summary: Admin - List forms
+      description: "Retrieve all forms excluding those marked as deleted (is_deleted: true)."
       parameters:
         - in: query
           name: page
@@ -33,7 +57,7 @@ paths:
                   page: { type: integer }
                   limit: { type: integer }
                   total: { type: integer }
-                  users:
+                  forms:
                     type: array
                     items:
                       $ref: '#/components/schemas/Form'
@@ -72,7 +96,8 @@ paths:
           description: Updated
 
     delete:
-      summary: Admin - Delete a form
+      summary: Admin - Soft delete a form
+      description: Mark the form as deleted by setting `is_deleted` to `true`.
       parameters:
         - in: path
           required: true
@@ -108,27 +133,6 @@ paths:
                     items:
                       $ref: '#/components/schemas/Ticket'
 
-    post:
-      summary: Admin - Create tickets (by form_id)
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required: [form_id]
-              properties:
-                form_id: { type: string }
-      responses:
-        '201':
-          description: Tickets created
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Ticket'
-
   /admin/tickets/{ticketId}:
     get:
       summary: Admin - Get a ticket
@@ -163,7 +167,8 @@ paths:
           description: Updated
 
     delete:
-      summary: Admin - Delete a ticket
+      summary: Admin - Soft delete a ticket
+      description: Mark the ticket as deleted by setting `is_deleted` to `true`.
       parameters:
         - in: path
           required: true

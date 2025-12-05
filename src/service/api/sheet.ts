@@ -1,5 +1,5 @@
-import { prisma } from '../lib/prisma.js'
-import type { components } from '../types/api.js'
+import { prisma } from '../../lib/prisma.js'
+import type { components } from '../../types/api.js'
 
 type SheetInput = components['schemas']['SheetInput']
 

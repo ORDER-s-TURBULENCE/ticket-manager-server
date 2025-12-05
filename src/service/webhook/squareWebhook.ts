@@ -1,10 +1,10 @@
 import "dotenv/config";
-import { paymentCompletedDiscordTemplate } from '../lib/discordWebhook/discordTemplate.js';
-import { sendDiscordWebhook } from '../lib/discordWebhook/discordWebhook.js';
-import { sendMail } from '../lib/gmail/gmail.js';
-import { paymentCompletedMailTemplate } from '../lib/gmail/mailTemplate.js';
-import { prisma } from '../lib/prisma.js'
-import { SquarePaymentUpdatedEvent } from '../types/squareWebhook.js';
+import { paymentCompletedDiscordTemplate } from '../../lib/discordWebhook/discordTemplate.js';
+import { sendDiscordWebhook } from '../../lib/discordWebhook/discordWebhook.js';
+import { sendMail } from '../../lib/gmail/gmail.js';
+import { paymentCompletedMailTemplate } from '../../lib/gmail/mailTemplate.js';
+import { prisma } from '../../lib/prisma.js'
+import { SquarePaymentUpdatedEvent } from '../../types/squareWebhook.js';
 
 export const squareWebhook = async (squarePaymentUpdatedEvent: SquarePaymentUpdatedEvent ) => {
 

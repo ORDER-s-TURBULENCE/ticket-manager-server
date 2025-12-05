@@ -11,6 +11,9 @@ export const squareMailTemplate = (name: string, numberOfTickets: number, paymen
 申請内容を確認の上，
 下記リンクからお支払いをお願いいたします．
 
+なお，24時間以内にお支払いが確認できない場合，
+申請は自動的にキャンセルされますのでご注意ください．
+
 ----------
 
 申請内容：秩序の奔流 チケット ${numberOfTickets}枚
@@ -47,6 +50,9 @@ export const cashMailTemplate = (name: string, numberOfTickets: number, paymentM
 
 追って担当者よりご連絡いたしますので，
 今しばらくお待ちください．
+
+なお，1週間以内にお支払いが確認できない場合，
+申請は自動的にキャンセルされますのでご注意ください．
 
 よろしくお願いいたします．
 

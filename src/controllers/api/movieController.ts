@@ -1,5 +1,5 @@
 import type { Context } from 'hono'
-import * as service from '../service/movie.js'
+import * as service from '../../service/api/movie.js'
 
 export const getMovies = async (c: Context) => {
   try {

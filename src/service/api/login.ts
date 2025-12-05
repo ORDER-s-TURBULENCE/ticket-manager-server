@@ -1,5 +1,5 @@
 import { sign, verify } from "hono/jwt";
-import { prisma } from "../lib/prisma.js";
+import { prisma } from "../../lib/prisma.js";
 import { Context } from "hono";
 import bcrypt from "bcrypt";
 

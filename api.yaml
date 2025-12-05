@@ -436,6 +436,7 @@ components:
         movie_id: { type: string }
         created_at: { type: string, format: date-time }
         updated_at: { type: string, format: date-time }
+        is_deleted: { type: boolean }
 
     TicketInput:
       type: object

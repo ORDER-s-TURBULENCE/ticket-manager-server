@@ -13,15 +13,18 @@ export const squareWebhook = async (squarePaymentUpdatedEvent: SquarePaymentUpda
             return;
         }
 
-        const paymentLinks = await prisma.paymentLink.findMany({
+        const paymentLink = await prisma.paymentLink.findUnique({
             where: { order_id: squarePaymentUpdatedEvent.data.object.payment.order_id },
         });
-        if (paymentLinks.length === 0) {
+        if (!paymentLink) {
             throw new Error('payment_link_not_found');
+        }
+        if (paymentLink.is_completed) {
+            return;
         }
 
         const form = await prisma.form.findUnique({
-            where: { id: paymentLinks[0]?.form_id },
+            where: { id: paymentLink.form_id },
         });
         if (!form) throw new Error('form_not_found');
 
@@ -31,8 +34,12 @@ export const squareWebhook = async (squarePaymentUpdatedEvent: SquarePaymentUpda
                 data: { payment_status: 'completed' },
             });
             await tx.paymentLink.update({
-                where: { id: paymentLinks[0].id },
+                where: { id: paymentLink.id },
                 data: { is_completed: true },
+            });
+            await prisma.ticket.updateMany({
+                where: { form_id: form.id },
+                data: { is_activated: true },
             });
         });
 
@@ -43,7 +50,6 @@ export const squareWebhook = async (squarePaymentUpdatedEvent: SquarePaymentUpda
             subject: '【秩序の奔流】決済完了のお知らせ',
             text: paymentCompletedMailTemplate(form.name, `${process.env.TICKET_LIST_BASE_URL!}/${form.id}`),
         });
-
         
     } catch (error) {
         console.error('getMovies error', error);

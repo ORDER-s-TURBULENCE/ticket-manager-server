@@ -5,6 +5,7 @@ import { createSquarePaymentLink } from "../lib/square.js";
 import { sendDiscordWebhook } from "../lib/discordWebhook/discordWebhook.js";
 import { cashMailTemplate, squareMailTemplate } from "../lib/gmail/mailTemplate.js";
 import { cashDiscordTemplate, squareDiscordTemplate } from "../lib/discordWebhook/discordTemplate.js";
+import { createTicketsByForm } from "./ticket.js";
 
 type FormInput = components["schemas"]["FormInput"];
 
@@ -38,6 +39,8 @@ export const postForm = async (input: FormInput) => {
       remarks: input.remarks ?? null,
     },
   });
+
+  await createTicketsByForm(form.id);
 
   if (input.payment_method === "square") {
 
@@ -90,6 +93,13 @@ export const putForm = async (id: string, input: FormInput) => {
       remarks: input.remarks ?? null,
     },
   });
+
+  if (input.payment_status === "completed") {
+    await prisma.ticket.updateMany({
+      where: { form_id: id },
+      data: { is_activated: true },
+    });
+  }
 };
 
 export const deleteForm = async (id: string) => {

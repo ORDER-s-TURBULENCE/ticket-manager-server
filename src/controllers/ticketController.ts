@@ -25,20 +25,6 @@ export const getTicketsByFormId = async (c: Context) => {
   }
 }
 
-export const postTickets = async (c: Context) => {
-  try {
-    const payload = await c.req.json()
-    if (!payload?.form_id) return c.text('form_id required', 400)
-    await service.postTicketsByForm(payload.form_id)
-    return c.text('Created', 201)
-  } catch (err: any) {
-    console.error('POST /tickets error', err)
-    if (err.message === 'form_not_found') return c.text('Form not found', 404)
-    if (err.message === 'no_movie_available') return c.text('No movie available to attach tickets', 400)
-    return c.text('Internal Server Error', 500)
-  }
-}
-
 export const getTicketById = async (c: Context) => {
   try {
     const { ticketId } = c.req.param()

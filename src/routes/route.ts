@@ -33,7 +33,6 @@ admin.delete('/forms/:formId', formController.deleteForm)
 
 // Tickets
 admin.get('/tickets', ticketController.getTickets)
-admin.post('/tickets', ticketController.postTickets)
 admin.get('/tickets/:ticketId', ticketController.getTicketById)
 admin.put('/tickets/:ticketId', ticketController.putTicket)
 admin.delete('/tickets/:ticketId', ticketController.deleteTicket)
@@ -57,7 +56,6 @@ user.post('/forms', formController.postForm)
 
 // Tickets
 user.get('/tickets/form/:formId', ticketController.getTicketsByFormId)
-user.put('/tickets/:ticketId', ticketController.putTicket)
 
 api.route('/user', user)
 

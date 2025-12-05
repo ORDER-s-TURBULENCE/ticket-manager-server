@@ -22,7 +22,15 @@ export const getTicketsByFormId = async (form_id: string) => {
   return prisma.ticket.findMany({ where: { form_id } })
 }
 
-export const postTicketsByForm = async (form_id: string) => {
+export const putTicket = async (id: string, input: TicketInput) => {
+ await prisma.ticket.update({ where: { id }, data: input as any })
+}
+
+export const deleteTicket = async (id: string) => {
+  await prisma.ticket.update({ where: { id }, data: { is_deleted: true } })
+}
+
+export const createTicketsByForm = async (form_id: string) => {
   const form = await prisma.form.findUnique({ where: { id: form_id } })
   if (!form) throw new Error('form_not_found')
 
@@ -33,7 +41,7 @@ export const postTicketsByForm = async (form_id: string) => {
             form_id: form.id, 
             movie_id: form.movie_id,
             purpose: 'seat' as TicketPurpose,
-            is_activated: true,
+            is_activated: false,
             is_used: false,
         })
     }
@@ -42,18 +50,10 @@ export const postTicketsByForm = async (form_id: string) => {
             form_id: form.id, 
             movie_id: form.movie_id,
             purpose: 'goods' as TicketPurpose,
-            is_activated: true,
+            is_activated: false,
             is_used: false,
         })
     }
     await tx.ticket.createMany({ data: toCreatd })
   })
-}
-
-export const putTicket = async (id: string, input: TicketInput) => {
- await prisma.ticket.update({ where: { id }, data: input as any })
-}
-
-export const deleteTicket = async (id: string) => {
-  await prisma.ticket.delete({ where: { id } })
 }

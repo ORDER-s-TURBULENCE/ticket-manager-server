@@ -4,6 +4,8 @@ import * as formController from '../controllers/formController.js'
 import * as ticketController from '../controllers/ticketController.js'
 import * as sheetController from '../controllers/sheetController.js'
 import * as squareWebhookController from '../controllers/squareWebhook.js'
+import { jwtMiddleware } from '../service/login.js'
+import * as loginController from '../controllers/loginController.js'
 
 const api = new Hono()
 const admin = new Hono()
@@ -17,6 +19,12 @@ webhook.post('/squareWebhook', squareWebhookController.postSquareWebhook)
 api.route('/webhook', webhook)
 
 // === Admin routes ===
+// login
+admin.post('/login', loginController.loginAdmin);
+
+// JWT Middleware for all admin routes below
+admin.use('*', jwtMiddleware)
+
 // Forms
 admin.get('/forms', formController.getForms)
 admin.get('/forms/:formId', formController.getFormById)

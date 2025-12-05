@@ -1,10 +1,10 @@
-import { sendMail } from "../lib/gmail/gmail.js";
-import { prisma } from "../lib/prisma.js";
-import type { components } from "../types/api.js";
-import { createSquarePaymentLink } from "../lib/square.js";
-import { sendDiscordWebhook } from "../lib/discordWebhook/discordWebhook.js";
-import { cashMailTemplate, squareMailTemplate } from "../lib/gmail/mailTemplate.js";
-import { cashDiscordTemplate, squareDiscordTemplate } from "../lib/discordWebhook/discordTemplate.js";
+import { sendMail } from "../../lib/gmail/gmail.js";
+import { prisma } from "../../lib/prisma.js";
+import type { components } from "../../types/api.js";
+import { createSquarePaymentLink } from "../../lib/square.js";
+import { sendDiscordWebhook } from "../../lib/discordWebhook/discordWebhook.js";
+import { cashMailTemplate, squareMailTemplate } from "../../lib/gmail/mailTemplate.js";
+import { cashDiscordTemplate, squareDiscordTemplate } from "../../lib/discordWebhook/discordTemplate.js";
 import { createTicketsByForm } from "./ticket.js";
 
 type FormInput = components["schemas"]["FormInput"];

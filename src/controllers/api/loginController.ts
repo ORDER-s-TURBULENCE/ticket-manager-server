@@ -1,5 +1,5 @@
 import type { Context } from 'hono'
-import * as service from '../service/login.js'
+import * as service from '../../service/api/login.js'
 
 export const loginAdmin = async (c: Context) => {
     try {

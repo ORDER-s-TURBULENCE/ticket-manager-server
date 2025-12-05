@@ -1,5 +1,5 @@
 import type { Context } from 'hono'
-import * as service from '../service/sheet.js'
+import * as service from '../../service/api/sheet.js'
 
 export const getSheets = async (c: Context) => {
   try {

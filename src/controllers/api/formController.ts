@@ -1,5 +1,5 @@
 import type { Context } from 'hono'
-import * as service from '../service/form.js'
+import * as service from '../../service/api/form.js'
 
 export const getForms = async (c: Context) => {
   const page = Number(c.req.query('page') ?? 1)

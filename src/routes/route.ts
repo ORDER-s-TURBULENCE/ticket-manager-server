@@ -1,11 +1,11 @@
 import { Hono } from 'hono'
-import * as movieController from '../controllers/movieController.js'
-import * as formController from '../controllers/formController.js'
-import * as ticketController from '../controllers/ticketController.js'
-import * as sheetController from '../controllers/sheetController.js'
-import * as squareWebhookController from '../controllers/squareWebhook.js'
-import { jwtMiddleware } from '../service/login.js'
-import * as loginController from '../controllers/loginController.js'
+import * as movieController from '../controllers/api/movieController.js'
+import * as formController from '../controllers/api/formController.js'
+import * as ticketController from '../controllers/api/ticketController.js'
+import * as sheetController from '../controllers/api/sheetController.js'
+import * as squareWebhookController from '../controllers/webhook/squareWebhook.js'
+import { jwtMiddleware } from '../service/api/login.js'
+import * as loginController from '../controllers/api/loginController.js'
 
 const api = new Hono()
 const admin = new Hono()

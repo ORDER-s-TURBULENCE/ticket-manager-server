@@ -1,5 +1,5 @@
 import type { Context } from 'hono'
-import * as service from '../service/ticket.js'
+import * as service from '../../service/api/ticket.js'
 
 export const getTickets = async (c: Context) => {
   const page = Number(c.req.query('page') ?? 1)

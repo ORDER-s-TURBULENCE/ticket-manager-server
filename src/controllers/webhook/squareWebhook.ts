@@ -1,5 +1,5 @@
 import type { Context } from 'hono'
-import * as service from '../service/squareWebhook.js'
+import * as service from '../../service/webhook/squareWebhook.js'
 import { WebhooksHelper } from 'square'
 
 export const postSquareWebhook = async (c: Context) => {

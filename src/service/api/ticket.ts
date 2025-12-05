@@ -1,5 +1,5 @@
-import { prisma } from '../lib/prisma.js'
-import type { components } from '../types/api.js'
+import { prisma } from '../../lib/prisma.js'
+import type { components } from '../../types/api.js'
 
 type TicketInput = components['schemas']['TicketInput']
 type TicketPurpose = components['schemas']['TicketPurpose']

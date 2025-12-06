@@ -51,7 +51,8 @@ export const cashMailTemplate = (name: string, numberOfTickets: number, paymentM
 追って担当者よりご連絡いたしますので，
 今しばらくお待ちください．
 
-なお，1週間以内にお支払いが確認できない場合，
+なお，担当者よりご連絡後，
+1週間以内にお支払いが確認できない場合，
 申請は自動的にキャンセルされますのでご注意ください．
 
 よろしくお願いいたします．

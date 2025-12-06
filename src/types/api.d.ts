@@ -684,7 +684,7 @@ export interface components {
             type?: components["schemas"]["FormType"];
             payment_method?: components["schemas"]["PaymentMethod"];
             payment_status?: components["schemas"]["PaymentStatus"];
-            number_of_tickets?: number;
+            number_of_goods_tickets?: number;
             number_of_seat_tickets?: number;
             is_deleted?: boolean;
             remarks?: string | null;
@@ -701,7 +701,7 @@ export interface components {
             type: components["schemas"]["FormType"];
             payment_method: components["schemas"]["PaymentMethod"];
             payment_status: components["schemas"]["PaymentStatus"];
-            number_of_tickets: number;
+            number_of_goods_tickets: number;
             number_of_seat_tickets: number;
             is_deleted?: boolean;
             remarks?: string | null;

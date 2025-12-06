@@ -387,7 +387,7 @@ components:
           $ref: '#/components/schemas/PaymentMethod'
         payment_status:
           $ref: '#/components/schemas/PaymentStatus'
-        number_of_tickets: { type: integer }
+        number_of_goods_tickets: { type: integer }
         number_of_seat_tickets  : { type: integer }
         is_deleted: { type: boolean }
         remarks: { type: string, nullable: true }
@@ -396,7 +396,7 @@ components:
 
     FormInput:
       type: object
-      required: [name, email, is_verified, movie_id, type, payment_method, payment_status, number_of_tickets, number_of_seat_tickets]
+      required: [name, email, is_verified, movie_id, type, payment_method, payment_status, number_of_goods_tickets, number_of_seat_tickets]
       properties:
         name: { type: string }
         email: { type: string }
@@ -408,7 +408,7 @@ components:
           $ref: '#/components/schemas/PaymentMethod'
         payment_status:
           $ref: '#/components/schemas/PaymentStatus'
-        number_of_tickets: { type: integer }
+        number_of_goods_tickets: { type: integer }
         number_of_seat_tickets: { type: integer }
         is_deleted: { type: boolean }
         remarks: { type: string, nullable: true }

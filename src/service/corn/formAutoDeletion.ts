@@ -1,4 +1,5 @@
 import { prisma } from '../../lib/prisma.js';
+import { deleteSquarePaymentLink } from '../../lib/square.js';
 
 export const deleteExpiredForms = async () => {
   const now = new Date();
@@ -32,9 +33,24 @@ export const deleteExpiredForms = async () => {
           is_deleted: true,
         },
       },
-      data: {
-        is_deleted: true,
+      data: { is_deleted: true },
+    });
+
+    const expiredPaymentLinks = await tx.paymentLink.findMany({
+      where: {
+        is_deleted: false,
+        form: {
+          is_deleted: true,
+        },
       },
     });
+
+    for (const paymentLink of expiredPaymentLinks) {
+      try {
+        await deleteSquarePaymentLink(paymentLink.id);
+      } catch (error) {
+        console.error(`Failed to delete Square payment link ${paymentLink.id}:`, error);
+      }
+    }
   });
 };

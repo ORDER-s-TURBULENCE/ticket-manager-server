@@ -81,6 +81,15 @@ export const deleteForm = async (c: Context) => {
     await service.deleteForm(formId)
     return c.text('', 200)
   } catch (err) {
+    if (err instanceof Error && err.message === "form_not_found") {
+      return c.text('Form Not Found', 400);
+    }
+    if (err instanceof Error && err.message === "form_already_deleted") {
+      return c.text('Form Already Deleted', 400);
+    }
+    if (err instanceof Error && err.message === "cannot_delete_completed_form") {
+      return c.text('Cannot Delete Completed Form', 400);
+    }
     console.error('DELETE /forms/{id} error', err)
     return c.text('Internal Server Error', 500)
   }

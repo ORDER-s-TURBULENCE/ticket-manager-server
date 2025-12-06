@@ -1,7 +1,7 @@
 import { sendMail } from "../../lib/gmail/gmail.js";
 import { prisma } from "../../lib/prisma.js";
 import type { components } from "../../types/api.js";
-import { createSquarePaymentLink } from "../../lib/square.js";
+import { createSquarePaymentLink, deleteSquarePaymentLink } from "../../lib/square.js";
 import { sendDiscordWebhook } from "../../lib/discordWebhook/discordWebhook.js";
 import { cashMailTemplate, paymentCompletedMailTemplate, squareMailTemplate } from "../../lib/gmail/mailTemplate.js";
 import { cashDiscordTemplate, paymentCompletedDiscordTemplate, squareDiscordTemplate } from "../../lib/discordWebhook/discordTemplate.js";
@@ -152,7 +152,30 @@ export const putForm = async (id: string, input: FormInput) => {
 
 export const deleteForm = async (id: string) => {
   await prisma.$transaction(async (tx) => {
+
+    const form  = await tx.form.findUnique({ where: { id } });
+    if (!form) {
+      throw new Error("form_not_found");
+    }
+    if (form.is_deleted) {
+      throw new Error("form_already_deleted");
+    }
+    if (form.payment_status === "completed") {
+      throw new Error("cannot_delete_completed_form");
+    }
+
     await tx.form.update({ where: { id }, data: { is_deleted: true } });
     await tx.ticket.updateMany({ where: { form_id: id }, data: { is_deleted: true } });
+
+    if (form.payment_method === "square" && form.payment_status === "pending") {
+      const paymentLink = await tx.paymentLink.findUnique({ where: { form_id: id } });
+      if (paymentLink && !paymentLink.is_deleted) {
+        try {
+          await deleteSquarePaymentLink(paymentLink.id);
+        } catch (error) {
+          console.error(`Failed to delete Square payment link ${paymentLink.id}:`, error);
+        }
+      }
+    }
   });
 };

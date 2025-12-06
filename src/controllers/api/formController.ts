@@ -52,6 +52,24 @@ export const putForm = async (c: Context) => {
     await service.putForm(formId, payload)
     return c.text('Updated', 200)
   } catch (err) {
+    if (err instanceof Error && err.message === "form_not_found") {
+      return c.text('Form Not Found', 400);
+    }
+    if (err instanceof Error && err.message === "cannot_change_payment_method_from_square") {
+      return c.text('Cannot Change Payment Method from Square', 400);
+    }
+    if (err instanceof Error && err.message === "cannot_change_payment_method_to_square") {
+      return c.text('Cannot Change Payment Method to Square', 400);
+    }
+    if (err instanceof Error && err.message === "cannot_change_payment_status_of_square") {
+      return c.text('Cannot Change Payment Status of Square', 400);
+    }
+    if (err instanceof Error && err.message === "cannot_change_payment_status_of_completed_form") {
+      return c.text('Cannot Change Payment Status of Completed Form', 400);
+    }
+    if (err instanceof Error && err.message === "cannot_change_number_of_tickets") {
+      return c.text('Cannot Change Number of Tickets', 400);
+    }
     console.error('PUT /forms/{id} error', err)
     return c.text('Internal Server Error', 500)
   }

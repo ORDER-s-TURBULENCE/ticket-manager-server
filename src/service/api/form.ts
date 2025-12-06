@@ -3,8 +3,8 @@ import { prisma } from "../../lib/prisma.js";
 import type { components } from "../../types/api.js";
 import { createSquarePaymentLink } from "../../lib/square.js";
 import { sendDiscordWebhook } from "../../lib/discordWebhook/discordWebhook.js";
-import { cashMailTemplate, squareMailTemplate } from "../../lib/gmail/mailTemplate.js";
-import { cashDiscordTemplate, squareDiscordTemplate } from "../../lib/discordWebhook/discordTemplate.js";
+import { cashMailTemplate, paymentCompletedMailTemplate, squareMailTemplate } from "../../lib/gmail/mailTemplate.js";
+import { cashDiscordTemplate, paymentCompletedDiscordTemplate, squareDiscordTemplate } from "../../lib/discordWebhook/discordTemplate.js";
 import { createTicketsByForm, getNumberOfTicketsForPurpose } from "./ticket.js";
 
 type FormInput = components["schemas"]["FormInput"];
@@ -88,6 +88,29 @@ export const getFormById = async (id: string) => {
 };
 
 export const putForm = async (id: string, input: FormInput) => {
+
+  const form = await prisma.form.findUnique({ where: { id } });
+  if (!form) throw new Error("form_not_found");
+
+  if (form.payment_method !== input.payment_method && form.payment_method === "square") {
+    throw new Error("cannot_change_payment_method_from_square");
+  }
+  if (form.payment_method !== input.payment_method && input.payment_method === "square") {
+    throw new Error("cannot_change_payment_method_to_square");
+  }
+  if (form.payment_method === "square" && form.payment_status !== input.payment_status) {
+    throw new Error("cannot_change_payment_status_of_square");
+  }
+  if (form.payment_status === "completed" && form.payment_status !== input.payment_status) {
+      throw new Error("cannot_change_payment_status_of_completed_form");
+  }
+  if (form.number_of_seat_tickets !== input.number_of_seat_tickets
+    || form.number_of_goods_tickets !== input.number_of_goods_tickets
+  ) {
+    throw new Error("cannot_change_number_of_tickets");
+  }
+    
+
   await prisma.form.update({
     where: { id },
     data: {
@@ -108,6 +131,21 @@ export const putForm = async (id: string, input: FormInput) => {
     await prisma.ticket.updateMany({
       where: { form_id: id },
       data: { is_activated: true },
+    });
+
+    const numberOfLeftoverTickets = await getNumberOfTicketsForPurpose(input.movie_id);
+    await sendDiscordWebhook(paymentCompletedDiscordTemplate(
+      input.payment_method === 'cash' ? "現金" : "銀行振込", 
+      input.name, 
+      input.number_of_seat_tickets, 
+      input.number_of_goods_tickets, 
+      numberOfLeftoverTickets.max_seats - numberOfLeftoverTickets.seat, id
+    ));
+
+    await sendMail({
+        to: input.email,
+        subject: '【秩序の奔流】決済完了のお知らせ',
+        text: paymentCompletedMailTemplate(input.name, `${process.env.TICKET_LIST_BASE_URL!}/${id}`),
     });
   }
 };

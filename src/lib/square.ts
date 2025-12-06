@@ -78,3 +78,27 @@ export async function createSquarePaymentLink({
 
   return data.payment_link
 }
+
+export async function deleteSquarePaymentLink(paymentLinkId: string) { {
+  const res = await fetch(
+    `${process.env.SQUARE_BASE_URL}/v2/online-checkout/payment-links/${paymentLinkId}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Square-Version": "2025-10-16",
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+    }
+  )
+
+  if (!res.ok) {
+    const data = await res.json()
+    throw new Error(JSON.stringify(data))
+  }
+
+  await prisma.paymentLink.update({
+    where: { id: paymentLinkId },
+    data: { is_deleted: true },
+  });
+}}

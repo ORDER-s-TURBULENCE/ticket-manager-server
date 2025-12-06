@@ -8,18 +8,18 @@ generator client {
 }
 
 model Form {
-  id                     String        @id @default(cuid())
-  name                   String
-  email                  String
-  movie_id               String
-  type                   FormType
-  is_verified            Boolean       @default(false)
-  payment_method         PaymentMethod
-  payment_status         PayMentStatus
-  number_of_tickets      Int
-  number_of_seat_tickets Int
-  is_deleted             Boolean       @default(false)
-  remarks                String?
+  id                      String        @id @default(cuid())
+  name                    String
+  email                   String
+  movie_id                String
+  type                    FormType
+  is_verified             Boolean       @default(false)
+  payment_method          PaymentMethod
+  payment_status          PayMentStatus
+  number_of_goods_tickets Int
+  number_of_seat_tickets  Int
+  is_deleted              Boolean       @default(false)
+  remarks                 String?
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -39,8 +39,8 @@ model Ticket {
   sheet_id     String?       @unique
   is_deleted   Boolean       @default(false)
 
-  created_at   DateTime      @default(now())
-  updated_at   DateTime      @updatedAt
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 
   form  Form   @relation(fields: [form_id], references: [id], onDelete: Cascade)
   movie Movie  @relation(fields: [movie_id], references: [id])

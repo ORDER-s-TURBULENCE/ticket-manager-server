@@ -5,7 +5,7 @@ import { createSquarePaymentLink } from "../../lib/square.js";
 import { sendDiscordWebhook } from "../../lib/discordWebhook/discordWebhook.js";
 import { cashMailTemplate, squareMailTemplate } from "../../lib/gmail/mailTemplate.js";
 import { cashDiscordTemplate, squareDiscordTemplate } from "../../lib/discordWebhook/discordTemplate.js";
-import { createTicketsByForm } from "./ticket.js";
+import { createTicketsByForm, getNumberOfTicketsForPurpose } from "./ticket.js";
 
 type FormInput = components["schemas"]["FormInput"];
 
@@ -24,6 +24,17 @@ export const getForms = async (page = 1, limit = 20) => {
 };
 
 export const postForm = async (input: FormInput) => {
+  if (input.number_of_goods_tickets < 0) {
+    throw new Error("invalid_number_of_goods_tickets");
+  }
+  if (input.number_of_seat_tickets < 0) {
+    throw new Error("invalid_number_of_seat_tickets");
+  }
+  const numberOfTickets = await getNumberOfTicketsForPurpose(input.movie_id);
+  if (numberOfTickets.seat + input.number_of_seat_tickets > numberOfTickets.max_seats) {
+    throw new Error("not_enough_seats");
+  }
+
   const form = await prisma.form.create({
     data: {
       name: input.name,
@@ -33,7 +44,7 @@ export const postForm = async (input: FormInput) => {
       is_verified: input.is_verified,
       payment_method: input.payment_method,
       payment_status: "not_contacted",
-      number_of_tickets: input.number_of_tickets,
+      number_of_goods_tickets: input.number_of_goods_tickets,
       number_of_seat_tickets: input.number_of_seat_tickets,
       is_deleted: false,
       remarks: input.remarks ?? null,
@@ -45,16 +56,15 @@ export const postForm = async (input: FormInput) => {
   if (input.payment_method === "square") {
 
     const paymentLink = await createSquarePaymentLink({
-      numberOfTickets: input.number_of_tickets, 
+      numberOfTickets: input.number_of_goods_tickets + input.number_of_seat_tickets, 
       formId: form.id
     });
 
-    await sendDiscordWebhook(squareDiscordTemplate(input.name, input.number_of_tickets, form.id));
-
+    await sendDiscordWebhook(squareDiscordTemplate(input.name, input.number_of_seat_tickets, input.number_of_goods_tickets, form.id));
     await sendMail({
       to: input.email,
       subject: "【秩序の奔流】購入申請受付完了とお支払いのお願い",
-      text: squareMailTemplate(input.name, input.number_of_tickets, paymentLink.url),
+      text: squareMailTemplate(input.name, input.number_of_seat_tickets, input.number_of_goods_tickets, paymentLink.url),
     });
 
     await prisma.form.update({
@@ -63,12 +73,12 @@ export const postForm = async (input: FormInput) => {
     });
   }
   else {
-    await sendDiscordWebhook(cashDiscordTemplate(input.name, input.number_of_tickets, form.id, input.payment_method === "cash" ? "現金" : "銀行振込"));
+    await sendDiscordWebhook(cashDiscordTemplate(input.name, input.number_of_seat_tickets, input.number_of_goods_tickets, form.id, input.payment_method === "cash" ? "現金" : "銀行振込"));
 
     await sendMail({
       to: input.email,
       subject: "【秩序の奔流】購入申請受付完了",
-        text: cashMailTemplate(input.name, input.number_of_tickets, input.payment_method === "cash" ? "現金" : "銀行振込"),
+        text: cashMailTemplate(input.name, input.number_of_seat_tickets, input.number_of_goods_tickets, input.payment_method === "cash" ? "現金" : "銀行振込"),
     });
   }
 };
@@ -88,7 +98,7 @@ export const putForm = async (id: string, input: FormInput) => {
       is_verified: input.is_verified,
       payment_method: input.payment_method,
       payment_status: input.payment_status,
-      number_of_tickets: input.number_of_tickets,
+      number_of_goods_tickets: input.number_of_goods_tickets,
       number_of_seat_tickets: input.number_of_seat_tickets,
       remarks: input.remarks ?? null,
     },

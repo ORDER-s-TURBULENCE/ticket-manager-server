@@ -68,7 +68,7 @@ export const createTicketsByForm = async (form_id: string) => {
             is_used: false,
         })
     }
-    for (let i = 0; i < form.number_of_tickets - form.number_of_seat_tickets; i++) {
+    for (let i = 0; i < form.number_of_goods_tickets; i++) {
         toCreatd.push({ 
             form_id: form.id, 
             movie_id: form.movie_id,

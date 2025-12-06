@@ -1,7 +1,7 @@
 import "dotenv/config";
 import { TICKET_PRICE } from "../constant.js";
 
-export const squareMailTemplate = (name: string, numberOfTickets: number, paymentLink: string) => `${name} 様
+export const squareMailTemplate = (name: string, numberOfSeatTickets: number, numberOfGoodsTickets: number, paymentLink: string) => `${name} 様
 
 秩序の奔流 製作委員会です．
 
@@ -16,8 +16,8 @@ export const squareMailTemplate = (name: string, numberOfTickets: number, paymen
 
 ----------
 
-申請内容：秩序の奔流 チケット ${numberOfTickets}枚
-お支払い金額：￥${numberOfTickets * TICKET_PRICE}
+申請内容：座席チケット ${numberOfSeatTickets}枚，グッズチケット ${numberOfGoodsTickets}枚
+お支払い金額：￥${(numberOfSeatTickets + numberOfGoodsTickets) * TICKET_PRICE}
 
 お支払いリンク：${paymentLink}
 
@@ -31,7 +31,7 @@ export const squareMailTemplate = (name: string, numberOfTickets: number, paymen
 mail: ${process.env.SUPPORT_EMAIL}
 `;
 
-export const cashMailTemplate = (name: string, numberOfTickets: number, paymentMethod: string) => `${name} 様
+export const cashMailTemplate = (name: string, numberOfSeatTickets: number, numberOfGoodsTickets: number, paymentMethod: string) => `${name} 様
 
 秩序の奔流 製作委員会です．
 
@@ -42,8 +42,8 @@ export const cashMailTemplate = (name: string, numberOfTickets: number, paymentM
 
 ----------
 
-申請内容：秩序の奔流 チケット ${numberOfTickets}枚
-お支払い金額：￥${numberOfTickets * TICKET_PRICE}
+申請内容：座席チケット ${numberOfSeatTickets}枚，グッズチケット ${numberOfGoodsTickets}枚
+お支払い金額：￥${(numberOfSeatTickets + numberOfGoodsTickets) * TICKET_PRICE}
 お支払い方法：${paymentMethod}
 
 ----------

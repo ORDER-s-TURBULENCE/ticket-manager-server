@@ -19,6 +19,15 @@ export const postForm = async (c: Context) => {
     await service.postForm(payload)
     return c.text('Created', 201)
   } catch (err) {
+    if (err instanceof Error && err.message === "not_enough_seats") {
+      return c.text('Not Enough Seats', 400);
+    }
+    if (err instanceof Error && err.message === "invalid_number_of_goods_tickets") {
+      return c.text('Invalid Number of Goods Tickets', 400);
+    }
+    if (err instanceof Error && err.message === "invalid_number_of_seat_tickets") {
+      return c.text('Invalid Number of Seat Tickets', 400);
+    }
     console.error('POST /forms error', err)
     return c.text('Internal Server Error', 500)
   }

@@ -5,6 +5,7 @@ import { sendMail } from '../../lib/gmail/gmail.js';
 import { paymentCompletedMailTemplate } from '../../lib/gmail/mailTemplate.js';
 import { prisma } from '../../lib/prisma.js'
 import { SquarePaymentUpdatedEvent } from '../../types/squareWebhook.js';
+import { getNumberOfTicketsForPurpose } from "../api/ticket.js";
 
 export const squareWebhook = async (squarePaymentUpdatedEvent: SquarePaymentUpdatedEvent ) => {
 
@@ -43,7 +44,8 @@ export const squareWebhook = async (squarePaymentUpdatedEvent: SquarePaymentUpda
             });
         });
 
-        await sendDiscordWebhook(paymentCompletedDiscordTemplate("Square", form.name, form.number_of_tickets, form.id));
+        const numberOfLeftoverTickets = await getNumberOfTicketsForPurpose(form.movie_id);
+        await sendDiscordWebhook(paymentCompletedDiscordTemplate("Square", form.name, form.number_of_seat_tickets, form.number_of_goods_tickets, numberOfLeftoverTickets.max_seats - numberOfLeftoverTickets.seat, form.id));
 
         await sendMail({
             to: form.email,

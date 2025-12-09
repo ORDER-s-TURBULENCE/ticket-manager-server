@@ -4,8 +4,9 @@ import * as formController from '../controllers/api/formController.js'
 import * as ticketController from '../controllers/api/ticketController.js'
 import * as sheetController from '../controllers/api/sheetController.js'
 import * as squareWebhookController from '../controllers/webhook/squareWebhook.js'
-import { jwtMiddleware } from '../service/api/login.js'
 import * as loginController from '../controllers/api/loginController.js'
+import { jwtMiddleware } from '../middleware/jwtMiddleware.js'
+import { corsMiddleware } from '../middleware/corsMiddleware.js'
 
 const api = new Hono()
 const admin = new Hono()
@@ -59,5 +60,6 @@ user.get('/tickets/form/:formId', ticketController.getTicketsByFormId)
 user.get('/tickets/seat/count/:movieId', ticketController.getTicketCountForSeats)
 
 api.route('/user', user)
+api.use('*', corsMiddleware);
 
 export default api

@@ -1,6 +1,5 @@
-import { sign, verify } from "hono/jwt";
+import { sign } from "hono/jwt";
 import { prisma } from "../../lib/prisma.js";
-import { Context } from "hono";
 import bcrypt from "bcrypt";
 
 export const createLoginToken = async (username: string, password: string) => {
@@ -24,26 +23,6 @@ export const createLoginToken = async (username: string, password: string) => {
     );
     return token;
 }
-
-export const jwtMiddleware = async (c: Context, next: () => Promise<void>) => {
-    const authHeader = c.req.header('Authorization');
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-        return c.text('Unauthorized', 401);
-    }
-
-    try {
-        const payload = await verify(
-            authHeader.substring(7),
-            process.env.JWT_SECRET!,
-            'HS256'
-        );
-        c.set('jwtPayload', payload);
-        return await next();
-    } catch (err) {
-        return c.text('Unauthorized', 401);
-    }
-}
-
 
 export const createAdmin = async (username: string, password: string) => {
     const existingAdmin = await prisma.admin.findUnique({ where: { username } });
